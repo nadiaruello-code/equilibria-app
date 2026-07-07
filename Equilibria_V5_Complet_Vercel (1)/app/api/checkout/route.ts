@@ -1,0 +1,3 @@
+import { NextResponse } from 'next/server';
+import { stripe, PRICE_MAP } from '@/lib/stripe';
+export async function POST(req:Request){try{const {plan}=await req.json();const price=PRICE_MAP[plan||'premium'];if(!price)throw new Error('Price ID manquant pour '+plan);const origin=process.env.NEXT_PUBLIC_SITE_URL||new URL(req.url).origin;const session=await stripe.checkout.sessions.create({mode:plan==='circle'?'subscription':'payment',line_items:[{price,quantity:1}],success_url:`${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,cancel_url:`${origin}/offres`,allow_promotion_codes:true,metadata:{plan}});return NextResponse.json({url:session.url})}catch(e:any){return NextResponse.json({error:e.message},{status:500})}}

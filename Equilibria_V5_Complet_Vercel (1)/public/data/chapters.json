@@ -1,0 +1,422 @@
+[
+  {
+    "day": 1,
+    "title": "La Rencontre",
+    "place": "La forêt",
+    "symbol": "La lanterne",
+    "emoji": "🏮",
+    "quote": "Tu crois être perdu. Tu es seulement fatigué.",
+    "audio_path": "jour-1.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 2,
+    "title": "La Clé du Refuge",
+    "place": "Le refuge",
+    "symbol": "La clé",
+    "emoji": "🗝️",
+    "quote": "Tu n’as rien à prouver ici.",
+    "audio_path": "jour-2.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 3,
+    "title": "Le Souffle retrouvé",
+    "place": "La clairière",
+    "symbol": "La plume",
+    "emoji": "🪶",
+    "quote": "Le souffle est le chemin du retour.",
+    "audio_path": "jour-3.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 4,
+    "title": "La Rivière qui emporte",
+    "place": "La rivière",
+    "symbol": "Le galet",
+    "emoji": "🪨",
+    "quote": "Tout ce qui circule peut se transformer.",
+    "audio_path": "jour-4.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 5,
+    "title": "Le Jardin du Calme",
+    "place": "Le jardin",
+    "symbol": "La graine",
+    "emoji": "🌱",
+    "quote": "Ce que tu nourris grandit.",
+    "audio_path": "jour-5.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 6,
+    "title": "La Chambre de la Nuit",
+    "place": "La chambre paisible",
+    "symbol": "La couverture",
+    "emoji": "🌙",
+    "quote": "Le repos commence bien avant le sommeil.",
+    "audio_path": "jour-6.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 7,
+    "title": "Le Sanctuaire",
+    "place": "Le sanctuaire",
+    "symbol": "Le cercle",
+    "emoji": "⭕",
+    "quote": "Tu sais maintenant revenir.",
+    "audio_path": "jour-7.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 8,
+    "title": "Le Seuil de l’Alerte",
+    "place": "Le sentier étroit",
+    "symbol": "Le seuil",
+    "emoji": "🚪",
+    "quote": "Avant d’agir, respire.",
+    "audio_path": "jour-8.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 9,
+    "title": "La Maison des Pensées",
+    "place": "La bibliothèque",
+    "symbol": "Le livre blanc",
+    "emoji": "📖",
+    "quote": "Une pensée n’est pas une vérité.",
+    "audio_path": "jour-9.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 10,
+    "title": "Le Bouton Pause",
+    "place": "L’atelier du temps",
+    "symbol": "Le sablier",
+    "emoji": "⏳",
+    "quote": "Une seule respiration peut changer une journée.",
+    "audio_path": "jour-10.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 11,
+    "title": "Le Ciel Intérieur",
+    "place": "La colline",
+    "symbol": "Le cerf-volant",
+    "emoji": "🪁",
+    "quote": "Les pensées passent. Toi, tu demeures.",
+    "audio_path": "jour-11.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 12,
+    "title": "La Grotte de Lumière",
+    "place": "La grotte",
+    "symbol": "Le cristal",
+    "emoji": "💎",
+    "quote": "La sécurité peut renaître en toi.",
+    "audio_path": "jour-12.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 13,
+    "title": "La Salle des Échos",
+    "place": "La salle des échos",
+    "symbol": "La cloche",
+    "emoji": "🔔",
+    "quote": "La façon dont tu te parles façonne ton chemin.",
+    "audio_path": "jour-13.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 14,
+    "title": "La Porte de l’Aube",
+    "place": "La porte de lumière",
+    "symbol": "La clef de lumière",
+    "emoji": "🌅",
+    "quote": "Tu recommences à vivre.",
+    "audio_path": "jour-14.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 15,
+    "title": "La Vague de l’Envie",
+    "place": "La grande rivière",
+    "symbol": "La coquille",
+    "emoji": "🐚",
+    "quote": "Une envie n’est pas un ordre.",
+    "audio_path": "jour-15.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 16,
+    "title": "La Boussole du Corps",
+    "place": "La clairière des quatre chemins",
+    "symbol": "La boussole",
+    "emoji": "🧭",
+    "quote": "Ton corps parle doucement quand tu ralentis.",
+    "audio_path": "jour-16.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 17,
+    "title": "Chapitre 17",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-17.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 18,
+    "title": "Chapitre 18",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-18.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 19,
+    "title": "Chapitre 19",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-19.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 20,
+    "title": "Chapitre 20",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-20.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 21,
+    "title": "Chapitre 21",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-21.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 22,
+    "title": "Chapitre 22",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-22.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 23,
+    "title": "Chapitre 23",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-23.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 24,
+    "title": "Chapitre 24",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-24.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 25,
+    "title": "Chapitre 25",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-25.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 26,
+    "title": "Chapitre 26",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-26.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 27,
+    "title": "Chapitre 27",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-27.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 28,
+    "title": "Chapitre 28",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-28.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 29,
+    "title": "Chapitre 29",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-29.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 30,
+    "title": "Chapitre 30",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-30.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 31,
+    "title": "Chapitre 31",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-31.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 32,
+    "title": "Chapitre 32",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-32.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 33,
+    "title": "Chapitre 33",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-33.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 34,
+    "title": "Chapitre 34",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-34.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 35,
+    "title": "Chapitre 35",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-35.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 36,
+    "title": "Chapitre 36",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-36.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 37,
+    "title": "Chapitre 37",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-37.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 38,
+    "title": "Chapitre 38",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-38.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 39,
+    "title": "Chapitre 39",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-39.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 40,
+    "title": "Chapitre 40",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-40.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 41,
+    "title": "Chapitre 41",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-41.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  },
+  {
+    "day": 42,
+    "title": "Chapitre 42",
+    "place": "Lieu Equilibria",
+    "symbol": "Symbole Lumen",
+    "emoji": "✦",
+    "quote": "Je reviens à moi, un souffle après l’autre.",
+    "audio_path": "jour-42.mp3",
+    "text_content": "Texte complet du chapitre à intégrer depuis l’espace admin."
+  }
+]
