@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server';import { createAdminClient } from '@/lib/supabaseAdmin';import { requireAdmin } from '@/lib/adminGuard';
+export async function POST(req:Request){const guard=await requireAdmin();if('error' in guard)return guard.error;const {userId,plan}=await req.json();const admin=createAdminClient();const {error}=await admin.from('profiles').update({plan}).eq('id',userId);if(error)return NextResponse.json({error:error.message},{status:500});return NextResponse.json({ok:true})}
