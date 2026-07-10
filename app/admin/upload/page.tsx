@@ -1,2 +1,0 @@
-import { redirect } from 'next/navigation';import { createServerSupabaseClient,isAdminEmail } from '@/lib/supabaseServer';import AdminShell from '@/components/AdminShell';import AudioUploader from '@/components/AudioUploader';
-export default async function Page(){const supabase=createServerSupabaseClient();const {data:{user}}=await supabase.auth.getUser();if(!user)redirect('/login');if(!isAdminEmail(user.email))redirect('/app');return <AdminShell><h1>Audios Equilibria</h1><AudioUploader/></AdminShell>}
