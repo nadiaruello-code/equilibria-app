@@ -1,2 +1,56 @@
-import {NextResponse} from 'next/server';import {stripe,PRICE_MAP} from '@/lib/stripe';
-export async function POST(req:Request){try{const{plan}=await req.json();const price=PRICE_MAP[plan||'premium'];if(!price)throw new Error('Price ID manquant pour '+plan);const origin=process.env.NEXT_PUBLIC_SITE_URL||new URL(req.url).origin;const session=await stripe.checkout.sessions.create({mode:plan==='circle'?'subscription':'payment',line_items:[{price,quantity:1}],success_url:`${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,cancel_url:`${origin}/offres`,allow_promotion_codes:true,metadata:{plan}});return NextResponse.json({url:session.url})}catch(e:any){return NextResponse.json({error:e.message},{status:500})}}
+import { NextResponse } from 'next/server';
+import { stripe, PRICE_MAP } from '@/lib/stripe';
+import { createServerSupabaseClient } from '@/lib/supabaseServer';
+
+export async function POST(req: Request) {
+  try {
+    const { plan } = await req.json();
+
+    if (!['starter', 'premium', 'circle'].includes(plan)) {
+      return NextResponse.json({ error: 'Offre invalide.' }, { status: 400 });
+    }
+
+    const supabase = createServerSupabaseClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Connecte-toi avant de procéder au paiement.' },
+        { status: 401 }
+      );
+    }
+
+    const price = PRICE_MAP[plan];
+    if (!price) {
+      return NextResponse.json(
+        { error: `Price ID Stripe manquant pour ${plan}.` },
+        { status: 500 }
+      );
+    }
+
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin;
+
+    const session = await stripe.checkout.sessions.create({
+      mode: plan === 'circle' ? 'subscription' : 'payment',
+      client_reference_id: user.id,
+      customer_email: user.email || undefined,
+      line_items: [{ price, quantity: 1 }],
+      success_url: `${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/offres`,
+      allow_promotion_codes: true,
+      metadata: {
+        plan,
+        user_id: user.id,
+        user_email: user.email || ''
+      }
+    });
+
+    return NextResponse.json({ url: session.url });
+  } catch (error: any) {
+    console.error('Erreur Checkout :', error);
+    return NextResponse.json(
+      { error: error.message || 'Erreur Stripe.' },
+      { status: 500 }
+    );
+  }
+}
