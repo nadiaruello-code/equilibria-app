@@ -1,68 +1,55 @@
-"use client";
+'use client';
 
-import { FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
-import { createClient } from "@/lib/supabaseBrowser";
+import { FormEvent, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabaseBrowser';
 
 export default function UpdatePasswordPage() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [ready, setReady] = useState(false);
-  const [checking, setChecking] = useState(true);
-  const [message, setMessage] = useState("");
-  const [success, setSuccess] = useState(false);
+  const router = useRouter();
+
+  const [password, setPassword] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [sessionValid, setSessionValid] = useState(false);
 
   useEffect(() => {
-    const supabase = createClient();
+    async function checkSession() {
+      const supabase = createClient();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY" || session) {
-        setReady(true);
-        setChecking(false);
-      }
-    });
-
-    async function checkRecoverySession() {
       const {
-        data: { session },
+        data: { user },
         error,
-      } = await supabase.auth.getSession();
+      } = await supabase.auth.getUser();
 
-      if (error) {
-        console.error("Erreur de récupération de session :", error);
+      if (error || !user) {
+        setMessage(
+          'Le lien de réinitialisation est invalide ou a expiré. Demandez un nouveau lien.'
+        );
+        setSessionValid(false);
+      } else {
+        setSessionValid(true);
       }
 
-      if (session) {
-        setReady(true);
-      }
-
-      setChecking(false);
+      setCheckingSession(false);
     }
 
-    checkRecoverySession();
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    checkSession();
   }, []);
 
-  async function handleUpdatePassword(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function updatePassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage("");
-    setSuccess(false);
+    setMessage('');
 
-    if (password.length < 6) {
-      setMessage("Le mot de passe doit contenir au moins 6 caractères.");
+    if (password.length < 8) {
+      setMessage('Le mot de passe doit contenir au moins 8 caractères.');
       return;
     }
 
-    if (password !== confirmPassword) {
-      setMessage("Les deux mots de passe ne correspondent pas.");
+    if (password !== confirmation) {
+      setMessage('Les deux mots de passe ne correspondent pas.');
       return;
     }
 
@@ -75,115 +62,111 @@ export default function UpdatePasswordPage() {
     });
 
     if (error) {
-      console.error("Erreur de modification du mot de passe :", error);
+      setMessage(
+        `Impossible de modifier le mot de passe : ${error.message}`
+      );
       setLoading(false);
-
-      if (
-        error.message.toLowerCase().includes("session") ||
-        error.message.toLowerCase().includes("expired")
-      ) {
-        setMessage(
-          "Le lien de récupération est invalide ou a expiré. Demandez un nouveau lien."
-        );
-      } else {
-        setMessage(`Impossible de modifier le mot de passe : ${error.message}`);
-      }
-
       return;
     }
 
-    setSuccess(true);
-    setMessage(
-      "Votre mot de passe a bien été modifié. Redirection vers la connexion..."
-    );
+    setMessage('Votre mot de passe a bien été modifié.');
 
     await supabase.auth.signOut();
 
     setTimeout(() => {
-      window.location.href = "/login";
-    }, 1800);
-  }
-
-  if (checking) {
-    return (
-      <main className="section">
-        <div className="container">
-          <div className="card" style={{ maxWidth: 560 }}>
-            <p>Vérification du lien de récupération...</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (!ready) {
-    return (
-      <main className="section">
-        <div className="container">
-          <div className="card" style={{ maxWidth: 560 }}>
-            <h1>Lien invalide ou expiré</h1>
-
-            <p>
-              Ce lien de récupération n’est plus valide. Demandez un nouveau
-              lien pour modifier votre mot de passe.
-            </p>
-
-            <p>
-              <Link href="/reset-password">
-                Demander un nouveau lien
-              </Link>
-            </p>
-          </div>
-        </div>
-      </main>
-    );
+      router.replace('/login?password=updated');
+    }, 1500);
   }
 
   return (
     <main className="section">
       <div className="container">
         <div className="card" style={{ maxWidth: 560 }}>
-          <h1>Choisir un nouveau mot de passe</h1>
+          <h1>Nouveau mot de passe</h1>
 
-          <form onSubmit={handleUpdatePassword}>
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Nouveau mot de passe"
-              autoComplete="new-password"
-              disabled={loading || success}
-            />
+          {checkingSession && (
+            <p>Vérification du lien en cours...</p>
+          )}
 
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(event) =>
-                setConfirmPassword(event.target.value)
-              }
-              placeholder="Confirmer le mot de passe"
-              autoComplete="new-password"
-              disabled={loading || success}
-            />
+          {!checkingSession && sessionValid && (
+            <>
+              <p style={{ marginBottom: 20 }}>
+                Choisissez votre nouveau mot de passe.
+              </p>
 
-            <button
-              type="submit"
-              className="btn gold"
-              disabled={loading || success}
-            >
-              {loading
-                ? "Modification..."
-                : success
-                  ? "Mot de passe modifié"
-                  : "Modifier mon mot de passe"}
-            </button>
-          </form>
+              <form onSubmit={updatePassword}>
+                <div style={{ marginBottom: 16 }}>
+                  <label
+                    htmlFor="password"
+                    style={{ display: 'block', marginBottom: 6 }}
+                  >
+                    Nouveau mot de passe
+                  </label>
+
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="8 caractères minimum"
+                    autoComplete="new-password"
+                    minLength={8}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label
+                    htmlFor="confirmation"
+                    style={{ display: 'block', marginBottom: 6 }}
+                  >
+                    Confirmer le mot de passe
+                  </label>
+
+                  <input
+                    id="confirmation"
+                    type="password"
+                    value={confirmation}
+                    onChange={(event) =>
+                      setConfirmation(event.target.value)
+                    }
+                    placeholder="Confirmez le mot de passe"
+                    autoComplete="new-password"
+                    minLength={8}
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn gold"
+                  disabled={loading}
+                >
+                  {loading
+                    ? 'Modification en cours...'
+                    : 'Modifier mon mot de passe'}
+                </button>
+              </form>
+            </>
+          )}
 
           {message && (
-            <p role="alert">
+            <p style={{ marginTop: 20 }}>
               {message}
             </p>
           )}
+
+          {!checkingSession && !sessionValid && (
+            <p style={{ marginTop: 20 }}>
+              <Link href="/reset-password">
+                Demander un nouveau lien
+              </Link>
+            </p>
+          )}
+
+          <p style={{ marginTop: 20 }}>
+            <Link href="/login">Retour à la connexion</Link>
+          </p>
         </div>
       </div>
     </main>

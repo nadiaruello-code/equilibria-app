@@ -1,18 +1,14 @@
-export type Plan = 'free' | 'starter' | 'premium' | 'circle';
+export type Plan = 'starter' | 'premium' | 'circle';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export function normalizePlan(plan: string | null | undefined): Plan {
-  const value = String(plan || 'free').trim().toLowerCase();
-  if (value === 'starter' || value === 'premium' || value === 'circle') return value;
-  return 'free';
+  const value = String(plan || 'starter').trim().toLowerCase();
+  return value === 'premium' || value === 'circle' ? value : 'starter';
 }
 
 export function getPlanLimit(plan: string | null | undefined) {
-  const normalized = normalizePlan(plan);
-  if (normalized === 'free') return 1;
-  if (normalized === 'starter') return 7;
-  return 42;
+  return normalizePlan(plan) === 'starter' ? 7 : 42;
 }
 
 export function getUnlockedDay(startedAt: string | Date | null | undefined, plan: string | null | undefined, now = new Date()) {

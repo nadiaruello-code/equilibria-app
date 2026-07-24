@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export default function UserPlanSelect({ userId, currentPlan }: { userId: string; currentPlan: string }) {
-  const [plan, setPlan] = useState(currentPlan || 'free');
+  const [plan, setPlan] = useState(currentPlan || 'starter');
   const [msg, setMsg] = useState('');
 
   async function save() {
@@ -21,7 +21,6 @@ export default function UserPlanSelect({ userId, currentPlan }: { userId: string
   return (
     <div className="row">
       <select value={plan} onChange={(e) => setPlan(e.target.value)}>
-        <option value="free">free — chapitre 1</option>
         <option value="starter">starter — 47 €</option>
         <option value="premium">premium — 197 €</option>
         <option value="circle">circle — abonnement</option>

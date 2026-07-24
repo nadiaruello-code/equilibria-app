@@ -10,15 +10,12 @@ export async function GET(req:Request) {
 
     const supabase = createServerSupabaseClient();
     const { data:{ user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({error:'Connexion requise.'},{status:401});
 
-    // L'audio du chapitre 1 est volontairement accessible sans compte.
-    if (day !== 1) {
-      if (!user) return NextResponse.json({error:'Connexion requise.'},{status:401});
-      const { data: profile } = await supabase.from('profiles').select('plan,started_at').eq('id',user.id).single();
-      const plan = normalizePlan(profile?.plan);
-      if (day > getPlanLimit(plan)) return NextResponse.json({error:'Un paiement est nécessaire pour poursuivre ce voyage.'},{status:403});
-      if (!canAccessChapter(day,profile?.started_at,plan)) return NextResponse.json({error:'Ce chapitre n’est pas encore ouvert. Lumen vous attendra demain.'},{status:403});
-    }
+    const { data: profile } = await supabase.from('profiles').select('plan,started_at').eq('id',user.id).single();
+    const plan = normalizePlan(profile?.plan);
+    if (day > getPlanLimit(plan)) return NextResponse.json({error:'Ce chapitre nécessite un accès supérieur.'},{status:403});
+    if (!canAccessChapter(day,profile?.started_at,plan)) return NextResponse.json({error:'Ce chapitre n’est pas encore ouvert. Lumen vous attendra demain.'},{status:403});
 
     const admin = createAdminClient();
     const bucket = process.env.SUPABASE_AUDIO_BUCKET || 'equilibria-audios';

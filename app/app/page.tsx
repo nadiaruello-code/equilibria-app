@@ -24,7 +24,7 @@ export default async function AppPage() {
 
   if (!profile) {
     const { data: created } = await supabase.from('profiles').insert({
-      id:user.id,email:user.email,plan:'free',started_at:new Date().toISOString()
+      id:user.id,email:user.email,plan:'starter',started_at:new Date().toISOString()
     }).select('*').single();
     profile = created;
   }
@@ -52,7 +52,7 @@ export default async function AppPage() {
       <div className="brand">EQUILIBRIA</div>
       <h2>Lumen vous attend</h2>
       <p>{user.email}</p>
-      <p>Accès : {plan === 'free' ? 'Chapitre 1 gratuit' : plan}</p>
+      <p>Plan : {plan}</p>
       <p>Progression : {completedDays.length}/42</p>
       <p>Ouvert aujourd’hui : jour {unlockedDay}</p>
       {nextUnlockDate && <div className="nextUnlockPanel"><strong>Prochain chapitre</strong><span>{unlockLabel}</span></div>}

@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
   const { userId, plan } = await req.json();
 
-  if (!['free', 'starter', 'premium', 'circle'].includes(plan)) {
+  if (!['starter', 'premium', 'circle'].includes(plan)) {
     return NextResponse.json({ error: 'Plan invalide.' }, { status: 400 });
   }
 

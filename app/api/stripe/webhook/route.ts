@@ -101,7 +101,7 @@ export async function POST(req: Request) {
       if (customerId) {
         const { error } = await admin
           .from('profiles')
-          .update({ plan: 'free' })
+          .update({ plan: 'starter' })
           .eq('stripe_customer_id', customerId);
 
         if (error) {
