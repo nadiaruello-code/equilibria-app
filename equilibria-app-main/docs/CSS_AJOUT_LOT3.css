@@ -1,0 +1,1 @@
+.admin{display:grid;grid-template-columns:280px 1fr;gap:24px}table{width:100%;border-collapse:collapse;background:var(--ivory);border-radius:18px;overflow:hidden}td,th{padding:12px;border-bottom:1px solid var(--line);text-align:left}.admin .side .btn{width:100%;justify-content:center;margin:4px 0}@media(max-width:920px){.admin{grid-template-columns:1fr}}
