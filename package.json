@@ -1,24 +1,35 @@
-{
-  "name": "equilibria-v6-1-lot1",
-  "version": "6.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "@supabase/ssr": "^0.5.1",
-    "@supabase/supabase-js": "^2.45.0",
-    "next": "^14.2.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "stripe": "^16.12.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.5.4",
-    "@types/node": "^20.14.10",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0"
-  }
-}
+-- Lot 3 : tables et colonnes administration
+
+create table if not exists public.chapters (
+  day int primary key,
+  title text not null,
+  place text,
+  symbol text,
+  emoji text,
+  quote text,
+  text_content text,
+  audio_path text,
+  illustration_path text,
+  created_at timestamptz default now()
+);
+
+alter table public.chapters enable row level security;
+
+drop policy if exists chapters_read_authenticated on public.chapters;
+create policy chapters_read_authenticated on public.chapters
+for select to authenticated using (true);
+
+alter table public.chapters add column if not exists illustration_path text;
+
+insert into public.chapters(day,title,place,symbol,emoji,quote,audio_path,illustration_path)
+select
+  i,
+  'Chapitre ' || i,
+  'Lieu Equilibria',
+  'Symbole Lumen',
+  '✦',
+  'Je reviens à moi, un souffle après l’autre.',
+  'jour-' || i || '.m4a',
+  'jour-' || i || '.webp'
+from generate_series(1,42) as i
+on conflict (day) do nothing;
