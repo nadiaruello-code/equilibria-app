@@ -22,12 +22,20 @@ export default async function AppPage() {
 
   let { data: profile } = await supabase.from('profiles').select('*').eq('id',user.id).single();
 
-  if (!profile) {
-    const { data: created } = await supabase.from('profiles').insert({
-      id:user.id,email:user.email,plan:'starter',started_at:new Date().toISOString()
-    }).select('*').single();
-    profile = created;
-  }
+ if (!profile) {
+  const { data: created } = await supabase
+    .from('profiles')
+    .insert({
+      id: user.id,
+      email: user.email,
+      plan: 'free',
+      started_at: new Date().toISOString(),
+    })
+    .select('*')
+    .single();
+
+  profile = created;
+}
 
   if (!profile?.started_at) {
     const startedAt = new Date().toISOString();
@@ -52,7 +60,16 @@ export default async function AppPage() {
       <div className="brand">EQUILIBRIA</div>
       <h2>Lumen vous attend</h2>
       <p>{user.email}</p>
-      <p>Plan : {plan}</p>
+      <p>
+  Plan :{' '}
+  {plan === 'free'
+    ? 'Découverte gratuite'
+    : plan === 'starter'
+      ? 'Voyage 7 jours'
+      : plan === 'premium'
+        ? 'Voyage complet'
+        : 'Cercle Equilibria'}
+</p>
       <p>Progression : {completedDays.length}/42</p>
       <p>Ouvert aujourd’hui : jour {unlockedDay}</p>
       {nextUnlockDate && <div className="nextUnlockPanel"><strong>Prochain chapitre</strong><span>{unlockLabel}</span></div>}
