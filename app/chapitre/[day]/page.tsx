@@ -147,12 +147,67 @@ export default async function ChapterPage({
           )}
 
           {!user && day === 1 && (
-            <div style={{ marginTop: 40, textAlign: "center" }}>
-              <p>
-                Le premier chapitre est accessible librement, sans compte.
-              </p>
-            </div>
-          )}
+  <div
+    style={{
+      marginTop: 48,
+      padding: "32px 24px",
+      textAlign: "center",
+      borderRadius: 24,
+      background: "rgba(255, 255, 255, 0.75)",
+      boxShadow: "0 18px 50px rgba(66, 72, 68, 0.12)",
+    }}
+  >
+    <p className="kicker dark">POURSUIVRE LE VOYAGE</p>
+
+    <h2>Votre chemin ne fait que commencer</h2>
+
+    <p style={{ maxWidth: 600, margin: "16px auto 28px" }}>
+      Vous venez de découvrir le premier chapitre d’Equilibria.
+      Créez gratuitement votre espace personnel pour conserver votre
+      progression et accéder à la suite de votre voyage.
+    </p>
+
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 12,
+        flexWrap: "wrap",
+      }}
+    >
+      <Link
+        href="/signup"
+        style={{
+          display: "inline-block",
+          padding: "14px 24px",
+          borderRadius: 999,
+          background: "#28332f",
+          color: "#ffffff",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        Créer mon espace gratuit
+      </Link>
+
+      <Link
+        href="/login"
+        style={{
+          display: "inline-block",
+          padding: "14px 24px",
+          borderRadius: 999,
+          border: "1px solid #28332f",
+          color: "#28332f",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        J’ai déjà un compte
+      </Link>
+    </div>
+  </div>
+)}
         </section>
       </div>
     </main>
