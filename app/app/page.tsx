@@ -1,90 +1,390 @@
 import { redirect } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
-import { createServerSupabaseClient } from '@/lib/supabaseServer';
-import { getPlanLimit, getUnlockedDay, getNextUnlockDate, normalizePlan } from '@/lib/dailyAccess';
-import SymbolCircle from '@/components/SymbolCircle';
-import ChapterCard from '@/components/ChapterCard';
 
-async function getFallbackChapters() {
-  return JSON.parse(await fs.readFile(path.join(process.cwd(),'public/data/chapters.json'),'utf-8'));
+import { createServerSupabaseClient } from '@/lib/supabaseServer';
+import {
+  getNextUnlockDate,
+  getPlanLimit,
+  getUnlockedDay,
+  normalizePlan,
+} from '@/lib/dailyAccess';
+
+import ChapterCard from '@/components/ChapterCard';
+import JourneyProgress from '@/components/JourneyProgress';
+import SymbolCircle from '@/components/SymbolCircle';
+
+const TOTAL_CHAPTERS = 42;
+
+type Chapter = {
+  id?: string | number;
+  day: number;
+  title: string;
+  quote?: string;
+  symbol?: string;
+  audio?: string;
+  [key: string]: unknown;
+};
+
+type ProgressRow = {
+  chapter_day: number;
+  completed: boolean;
+};
+
+async function getFallbackChapters(): Promise<Chapter[]> {
+  const filePath = path.join(
+    process.cwd(),
+    'public',
+    'data',
+    'chapters.json'
+  );
+
+  const fileContent = await fs.readFile(filePath, 'utf-8');
+
+  return JSON.parse(fileContent) as Chapter[];
 }
 
 function formatUnlockDate(date: Date | null) {
-  if (!date) return 'Reviens demain.';
-  return `Ouverture le ${new Intl.DateTimeFormat('fr-FR',{dateStyle:'long',timeStyle:'short'}).format(date)}.`;
+  if (!date) {
+    return 'Reviens demain.';
+  }
+
+  return `Ouverture le ${new Intl.DateTimeFormat('fr-FR', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+  }).format(date)}.`;
+}
+
+function getPlanName(plan: string) {
+  switch (plan) {
+    case 'free':
+      return 'Découverte gratuite';
+
+    case 'starter':
+      return 'Voyage 7 jours';
+
+    case 'premium':
+      return 'Voyage complet';
+
+    case 'circle':
+      return 'Cercle Equilibria';
+
+    default:
+      return 'Découverte gratuite';
+  }
 }
 
 export default async function AppPage() {
   const supabase = createServerSupabaseClient();
-  const { data:{ user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
 
-  let { data: profile } = await supabase.from('profiles').select('*').eq('id',user.id).single();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
- if (!profile) {
-  const { data: created } = await supabase
-    .from('profiles')
-    .insert({
-      id: user.id,
-      email: user.email,
-      plan: 'free',
-      started_at: new Date().toISOString(),
-    })
-    .select('*')
-    .single();
-
-  profile = created;
-}
-
-  if (!profile?.started_at) {
-    const startedAt = new Date().toISOString();
-    const { data: updated } = await supabase.from('profiles').update({started_at:startedAt}).eq('id',user.id).select('*').single();
-    profile = updated || {...profile,started_at:startedAt};
+  if (!user) {
+    redirect('/login');
   }
 
-  const plan = normalizePlan(profile?.plan);
+  /*
+   * Récupération ou création du profil utilisateur.
+   */
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  let profile = existingProfile;
+
+  if (!profile) {
+    const startedAt = new Date().toISOString();
+
+    const { data: createdProfile, error: createProfileError } =
+      await supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          email: user.email,
+          plan: 'free',
+          started_at: startedAt,
+        })
+        .select('*')
+        .single();
+
+    if (createProfileError || !createdProfile) {
+      console.error(
+        'Erreur lors de la création du profil :',
+        createProfileError
+      );
+
+      redirect('/login');
+    }
+
+    profile = createdProfile;
+  }
+
+  /*
+   * Sécurité supplémentaire pour les anciens profils qui
+   * n'auraient pas encore de date de démarrage.
+   */
+  if (!profile.started_at) {
+    const startedAt = new Date().toISOString();
+
+    const { data: updatedProfile } = await supabase
+      .from('profiles')
+      .update({
+        started_at: startedAt,
+      })
+      .eq('id', user.id)
+      .select('*')
+      .single();
+
+    profile =
+      updatedProfile ?? {
+        ...profile,
+        started_at: startedAt,
+      };
+  }
+
+  /*
+   * Calcul des accès selon le plan et le nombre de jours écoulés.
+   */
+  const plan = normalizePlan(profile.plan);
+  const planName = getPlanName(plan);
   const planLimit = getPlanLimit(plan);
-  const unlockedDay = getUnlockedDay(profile?.started_at,plan);
-  const nextUnlockDate = unlockedDay < planLimit ? getNextUnlockDate(profile?.started_at,unlockedDay) : null;
+
+  const unlockedDay = Math.min(
+    getUnlockedDay(profile.started_at, plan),
+    planLimit,
+    TOTAL_CHAPTERS
+  );
+
+  const nextUnlockDate =
+    unlockedDay < planLimit
+      ? getNextUnlockDate(profile.started_at, unlockedDay)
+      : null;
+
   const unlockLabel = formatUnlockDate(nextUnlockDate);
 
-  const { data: dbChapters } = await supabase.from('chapters').select('*').order('day');
-  const chapters = dbChapters && dbChapters.length === 42 ? dbChapters : await getFallbackChapters();
+  /*
+   * Récupération des chapitres.
+   * Si la base ne contient pas les 42 chapitres,
+   * le fichier JSON local est utilisé.
+   */
+  const { data: dbChapters } = await supabase
+    .from('chapters')
+    .select('*')
+    .order('day', {
+      ascending: true,
+    });
 
-  const { data: progressRows } = await supabase.from('progress').select('*').eq('user_id',user.id);
-  const completedDays = (progressRows || []).filter((p:any)=>p.completed).map((p:any)=>p.chapter_day);
+  const chapters: Chapter[] =
+    dbChapters && dbChapters.length === TOTAL_CHAPTERS
+      ? (dbChapters as Chapter[])
+      : await getFallbackChapters();
 
-  return <main className="container appShell">
-    <aside className="side">
-      <div className="brand">EQUILIBRIA</div>
-      <h2>Lumen vous attend</h2>
-      <p>{user.email}</p>
-      <p>
-  Plan :{' '}
-  {plan === 'free'
-    ? 'Découverte gratuite'
-    : plan === 'starter'
-      ? 'Voyage 7 jours'
-      : plan === 'premium'
-        ? 'Voyage complet'
-        : 'Cercle Equilibria'}
-</p>
-      <p>Progression : {completedDays.length}/42</p>
-      <p>Ouvert aujourd’hui : jour {unlockedDay}</p>
-      {nextUnlockDate && <div className="nextUnlockPanel"><strong>Prochain chapitre</strong><span>{unlockLabel}</span></div>}
-      <SymbolCircle completedDays={completedDays} chapters={chapters.slice(0,unlockedDay)} />
-      <form action="/auth/signout" method="post"><button className="btn">Déconnexion</button></form>
-    </aside>
-    <section>
-      <h1>Le Voyage</h1>
-      <div className="chapterGrid">
-        {chapters.map((chapter:any)=>{
-          const planLocked = chapter.day > planLimit;
-          const timeLocked = !planLocked && chapter.day > unlockedDay;
-          return <ChapterCard key={chapter.day} chapter={chapter} planLocked={planLocked} timeLocked={timeLocked} completed={completedDays.includes(chapter.day)} unlockLabel={unlockLabel}/>;
-        })}
-      </div>
-    </section>
-  </main>;
+  /*
+   * Récupération de la progression de l'utilisateur.
+   */
+  const { data: progressRows } = await supabase
+    .from('progress')
+    .select('chapter_day, completed')
+    .eq('user_id', user.id);
+
+  const completedDays = Array.from(
+    new Set(
+      ((progressRows ?? []) as ProgressRow[])
+        .filter((progress) => progress.completed)
+        .map((progress) => Number(progress.chapter_day))
+        .filter(
+          (chapterDay) =>
+            Number.isInteger(chapterDay) &&
+            chapterDay >= 1 &&
+            chapterDay <= TOTAL_CHAPTERS
+        )
+    )
+  ).sort((firstDay, secondDay) => firstDay - secondDay);
+
+  const completedChapters = completedDays.length;
+
+  /*
+   * Le chapitre actuel correspond au premier chapitre ouvert
+   * qui n'a pas encore été terminé.
+   */
+  const firstIncompleteUnlockedChapter = chapters.find(
+    (chapter) =>
+      chapter.day <= unlockedDay &&
+      !completedDays.includes(chapter.day)
+  );
+
+  const currentChapter =
+    firstIncompleteUnlockedChapter?.day ??
+    Math.min(unlockedDay + 1, TOTAL_CHAPTERS);
+
+  const remainingChapters = Math.max(
+    TOTAL_CHAPTERS - completedChapters,
+    0
+  );
+
+  return (
+    <main className="container appShell">
+      <aside className="side">
+        <div className="brand">EQUILIBRIA</div>
+
+        <div className="sideIntro">
+          <p className="sideEyebrow">Ton espace intérieur</p>
+
+          <h2>Lumen vous attend</h2>
+
+          <p className="sideWelcome">
+            Avancez à votre rythme, une étape après l’autre.
+          </p>
+        </div>
+
+        <div className="sideProfile">
+          <span className="sideProfileLabel">Votre compte</span>
+
+          <strong>{user.email}</strong>
+        </div>
+
+        <div className="sidePlan">
+          <span className="sidePlanLabel">Votre formule</span>
+
+          <strong>{planName}</strong>
+
+          <span>
+            {plan === 'free'
+              ? 'Accès au premier chapitre'
+              : plan === 'starter'
+                ? 'Accès aux 7 premiers chapitres'
+                : 'Accès aux 42 chapitres'}
+          </span>
+        </div>
+
+        <div className="sideStats">
+          <div className="sideStat">
+            <strong>{completedChapters}</strong>
+            <span>chapitres parcourus</span>
+          </div>
+
+          <div className="sideStat">
+            <strong>{remainingChapters}</strong>
+            <span>chapitres restants</span>
+          </div>
+        </div>
+
+        <div className="sideCurrentDay">
+          <span>Ouvert aujourd’hui</span>
+
+          <strong>
+            Jour {Math.min(unlockedDay, TOTAL_CHAPTERS)}
+          </strong>
+        </div>
+
+        {nextUnlockDate && (
+          <div className="nextUnlockPanel">
+            <span className="nextUnlockIcon" aria-hidden="true">
+              ✦
+            </span>
+
+            <div>
+              <strong>Prochain chapitre</strong>
+              <span>{unlockLabel}</span>
+            </div>
+          </div>
+        )}
+
+        <div className="sideSymbols">
+          <p className="sideSectionTitle">
+            Les lumières de votre voyage
+          </p>
+
+          <SymbolCircle
+            completedDays={completedDays}
+            chapters={chapters.slice(0, unlockedDay)}
+          />
+        </div>
+
+        <form
+          className="signoutForm"
+          action="/auth/signout"
+          method="post"
+        >
+          <button className="btn signoutButton" type="submit">
+            Déconnexion
+          </button>
+        </form>
+      </aside>
+
+      <section className="journeyContent">
+        <header className="journeyHeader">
+          <div>
+            <p className="journeyEyebrow">
+              Votre parcours Equilibria
+            </p>
+
+            <h1>Le Voyage</h1>
+
+            <p className="journeyIntroduction">
+              Chaque chapitre est une invitation à ralentir, à
+              ressentir et à vous rapprocher doucement de vous-même.
+            </p>
+          </div>
+
+          <div className="journeyChapterIndicator">
+            <span>Étape actuelle</span>
+
+            <strong>
+              {completedChapters >= TOTAL_CHAPTERS
+                ? 'Voyage accompli'
+                : `Chapitre ${currentChapter}`}
+            </strong>
+          </div>
+        </header>
+
+        <JourneyProgress
+          completedChapters={completedChapters}
+          totalChapters={TOTAL_CHAPTERS}
+          currentChapter={currentChapter}
+        />
+
+        <div className="chaptersHeading">
+          <div>
+            <p className="chaptersEyebrow">Les 42 étapes</p>
+            <h2>Explorez votre chemin intérieur</h2>
+          </div>
+
+          <span className="chaptersCount">
+            {completedChapters}/{TOTAL_CHAPTERS}
+          </span>
+        </div>
+
+        <div className="chapterGrid">
+          {chapters.map((chapter) => {
+            const planLocked = chapter.day > planLimit;
+
+            const timeLocked =
+              !planLocked && chapter.day > unlockedDay;
+
+            const completed = completedDays.includes(chapter.day);
+
+            return (
+              <ChapterCard
+                key={chapter.id ?? chapter.day}
+                chapter={chapter}
+                planLocked={planLocked}
+                timeLocked={timeLocked}
+                completed={completed}
+                unlockLabel={
+                  timeLocked
+                    ? unlockLabel
+                    : undefined
+                }
+              />
+            );
+          })}
+        </div>
+      </section>
+    </main>
+  );
 }
