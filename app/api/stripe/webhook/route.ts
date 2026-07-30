@@ -11,7 +11,7 @@ const ALLOWED_PLANS = ['starter', 'premium', 'circle'] as const;
 
 export async function POST(req: Request) {
   const body = await req.text();
-  const signature = headers().get('stripe-signature');
+const signature = req.headers.get('stripe-signature');
 
   if (!signature) {
     return NextResponse.json(
@@ -42,7 +42,17 @@ export async function POST(req: Request) {
   try {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
+if (
+  session.payment_status !== 'paid' &&
+  session.payment_status !== 'no_payment_required'
+) {
+  console.log('Session terminée sans paiement confirmé :', {
+    sessionId: session.id,
+    paymentStatus: session.payment_status,
+  });
 
+  return NextResponse.json({ received: true });
+}
       const metadataPlan = session.metadata?.plan;
 
       if (
