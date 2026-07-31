@@ -38,6 +38,7 @@ const signature = req.headers.get('stripe-signature');
   }
 
   const admin = createAdminClient();
+  console.log("Webhook reçu :", event.type);
 
   try {
     if (event.type === 'checkout.session.completed') {
@@ -88,6 +89,12 @@ if (
       let rows: any[] | null = null;
 
       if (userId) {
+        console.log({
+  userId,
+  email,
+  plan,
+  stripeCustomerId,
+});
         const result = await admin
           .from('profiles')
           .update({
