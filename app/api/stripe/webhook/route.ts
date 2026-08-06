@@ -42,8 +42,14 @@ const signature = req.headers.get('stripe-signature');
 
   try {
     if (event.type === 'checkout.session.completed') {
+
       const session = event.data.object as Stripe.Checkout.Session;
-if (
+
+      if (!event.livemode && process.env.NODE_ENV === 'production') {
+  console.log('Événement Stripe test ignoré en production :', event.id);
+  return NextResponse.json({ received: true });
+}
+      if (
   session.payment_status !== 'paid' &&
   session.payment_status !== 'no_payment_required'
 ) {
