@@ -1,4 +1,4 @@
-import { headers } from 'next/headers';
+
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabaseAdmin';
@@ -104,8 +104,10 @@ const signature = req.headers.get('stripe-signature');
         const result = await admin
           .from('profiles')
           .update({
-            plan,
-            stripe_customer_id: stripeCustomerId,
+  plan,
+  stripe_customer_id: stripeCustomerId,
+  started_at: new Date().toISOString(),
+
           })
           .eq('id', userId)
           .select('id,email,plan');
@@ -129,9 +131,10 @@ const signature = req.headers.get('stripe-signature');
         const result = await admin
           .from('profiles')
           .update({
-            plan,
-            stripe_customer_id: stripeCustomerId,
-          })
+  plan,
+  stripe_customer_id: stripeCustomerId,
+  started_at: new Date().toISOString(),
+})
           .ilike('email', email.trim())
           .select('id,email,plan');
 

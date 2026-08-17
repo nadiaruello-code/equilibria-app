@@ -343,10 +343,56 @@ export default async function AppPage() {
         </header>
 
         <JourneyProgress
-          completedChapters={completedChapters}
-          totalChapters={TOTAL_CHAPTERS}
-          currentChapter={currentChapter}
-        />
+  completedChapters={completedChapters}
+  totalChapters={TOTAL_CHAPTERS}
+  currentChapter={currentChapter}
+/>
+
+<section className="safety-section">
+  <div className="safety-card">
+    <span className="safety-icon" aria-hidden="true">
+      🌿
+    </span>
+
+    <h2>Equilibria est-il fait pour moi ?</h2>
+
+    <p>
+      Equilibria est un programme de bien-être et de relaxation conçu
+      pour vous offrir un temps de pause, d'écoute et de reconnexion
+      à vous-même.
+    </p>
+
+    <p>
+      Il peut être utilisé de manière autonome et ne nécessite pas
+      d'être déjà accompagné par un professionnel.
+    </p>
+
+    <div className="safety-notice">
+      <strong>À savoir avant de commencer</strong>
+
+      <p>
+        Equilibria ne remplace pas une consultation ou une prise en
+        charge médicale, psychologique ou psychiatrique.
+      </p>
+
+      <p>
+        Si vous traversez une période de grande détresse, une crise
+        psychique aiguë, ou si une séance provoque un malaise important
+        ou des émotions difficiles à gérer, interrompez l'écoute et
+        rapprochez-vous d'un professionnel de santé.
+      </p>
+    </div>
+
+    <p className="safety-small">
+      🎧 Écoutez les séances dans un endroit calme et sécurisé.
+      N'utilisez pas Equilibria en conduisant ou pendant une activité
+      nécessitant votre vigilance. Vous pouvez interrompre une séance
+      à tout moment.
+    </p>
+  </div>
+</section>
+
+
 
         <div className="chaptersHeading">
           <div>
