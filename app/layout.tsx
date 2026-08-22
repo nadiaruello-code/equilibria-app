@@ -1,9 +1,8 @@
 import './globals.css';
+import Script from 'next/script';
 
 export const metadata = {
-  title: 'Equilibria | Voyage audio immersif pour retrouver calme et équilibre',
-  description:
-    'Découvrez Equilibria, un voyage audio immersif en 42 chapitres pour ralentir, retrouver le calme et prendre soin de votre équilibre émotionnel. Premier chapitre gratuit.',
+  title: 'Equilibria – Voyage audio immersif',
 };
 
 export default function RootLayout({
@@ -13,7 +12,35 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        {children}
+
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '4520084481544269');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=4520084481544269&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+      </body>
     </html>
   );
 }
