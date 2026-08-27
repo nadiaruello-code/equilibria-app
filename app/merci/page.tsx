@@ -35,7 +35,11 @@ export default async function Merci({
   return (
     <main className="section">
       {paymentConfirmed && value > 0 && (
-        <MetaPurchase value={value} plan={plan} />
+        <MetaPurchase
+  value={value}
+  plan={plan}
+  sessionId={sessionId!}
+/>
       )}
 
       <div className="container">
