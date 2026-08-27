@@ -24,7 +24,15 @@ export default function Signup() {
       setMsg(error.message);
       return;
     }
+// Meta Pixel : enregistre uniquement une vraie nouvelle inscription
+const isNewRegistration = Boolean(data.user?.identities?.length);
 
+if (isNewRegistration && typeof (window as any).fbq === 'function') {
+  (window as any).fbq('track', 'CompleteRegistration', {
+    content_name: 'Espace gratuit Equilibria',
+    status: true,
+  });
+}
     setMsg(
       "✨ Votre espace a été créé ! Vérifiez votre boîte mail puis connectez-vous pour poursuivre votre voyage."
     );
