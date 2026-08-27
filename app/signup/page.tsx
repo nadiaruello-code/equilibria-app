@@ -12,7 +12,7 @@ export default function Signup() {
   async function signup() {
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
