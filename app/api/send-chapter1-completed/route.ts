@@ -35,7 +35,10 @@ export async function POST(request: Request) {
             name: 'Equilibria',
             email: 'contact@voyage-equilibria.fr',
           },
-
+replyTo: {
+  email: 'nadia.ruello@gmail.com',
+  name: 'Nadia',
+},
           to: [{ email }],
 
           subject: '🗝️ La clé du Refuge vous attend',

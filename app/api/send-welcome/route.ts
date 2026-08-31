@@ -36,6 +36,10 @@ export async function POST(request: Request) {
             name: 'Equilibria',
             email: 'contact@voyage-equilibria.fr',
           },
+          replyTo: {
+  email: 'nadia.ruello@gmail.com',
+  name: 'Nadia',
+},
 
           to: [
             {
@@ -96,7 +100,7 @@ export async function POST(request: Request) {
                 <div style="font-size:30px;">🏮</div>
 
                 <h2>
-                  Jour 1 — Le Refuge
+                  Jour 1 — La rencontre
                 </h2>
 
                 <p>
@@ -117,7 +121,7 @@ export async function POST(request: Request) {
                     font-weight:bold;
                   "
                 >
-                  🎧 Entrer dans le Refuge
+                  🎧 Entrer dans la rencontre
                 </a>
 
               </div>
