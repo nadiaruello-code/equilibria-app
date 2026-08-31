@@ -138,10 +138,17 @@ export default function PremiumAudioPlayer({
         );
 
       setChapter1Finished(true);
-      // Envoie automatiquement l'email "La clé du Refuge"
-if (user.email) {
+
+// Vérifie si l'email de fin du chapitre 1 a déjà été envoyé
+const { data: profileData } = await supabase
+  .from('profiles')
+  .select('chapter1_email_sent_at')
+  .eq('id', user.id)
+  .single();
+
+if (!profileData?.chapter1_email_sent_at && user.email) {
   try {
-    await fetch('/api/send-chapter1-completed', {
+    const response = await fetch('/api/send-chapter1-completed', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -150,6 +157,16 @@ if (user.email) {
         email: user.email,
       }),
     });
+
+    // On enregistre la date uniquement si Brevo a bien accepté l'email
+    if (response.ok) {
+      await supabase
+        .from('profiles')
+        .update({
+          chapter1_email_sent_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+    }
   } catch (error) {
     console.error(
       'Erreur envoi email fin chapitre 1 :',
