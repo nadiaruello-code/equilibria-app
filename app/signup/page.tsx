@@ -24,15 +24,35 @@ export default function Signup() {
       setMsg(error.message);
       return;
     }
-// Meta Pixel : enregistre uniquement une vraie nouvelle inscription
-const isNewRegistration = Boolean(data.user?.identities?.length);
 
-if (isNewRegistration && typeof (window as any).fbq === 'function') {
-  (window as any).fbq('track', 'CompleteRegistration', {
-    content_name: 'Espace gratuit Equilibria',
-    status: true,
-  });
-}
+    // Vérifie qu'il s'agit bien d'une nouvelle inscription
+    const isNewRegistration = Boolean(data.user?.identities?.length);
+
+    if (isNewRegistration) {
+      // Meta Pixel
+      if (typeof (window as any).fbq === 'function') {
+        (window as any).fbq('track', 'CompleteRegistration', {
+          content_name: 'Espace gratuit Equilibria',
+          status: true,
+        });
+      }
+
+      // Email automatique Brevo
+      try {
+        await fetch('/api/send-welcome', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+          }),
+        });
+      } catch (error) {
+        console.error('Erreur envoi email de bienvenue :', error);
+      }
+    }
+
     setMsg(
       "✨ Votre espace a été créé ! Vérifiez votre boîte mail puis connectez-vous pour poursuivre votre voyage."
     );
@@ -42,7 +62,6 @@ if (isNewRegistration && typeof (window as any).fbq === 'function') {
     <main className="section">
       <div className="container">
         <div className="card" style={{ maxWidth: 600 }}>
-
           <p className="kicker dark">
             ÉQUILIBRIA
           </p>
@@ -84,7 +103,6 @@ if (isNewRegistration && typeof (window as any).fbq === 'function') {
               J'ai déjà un compte
             </Link>
           </p>
-
         </div>
       </div>
     </main>
