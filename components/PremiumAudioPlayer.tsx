@@ -138,6 +138,25 @@ export default function PremiumAudioPlayer({
         );
 
       setChapter1Finished(true);
+      // Envoie automatiquement l'email "La clé du Refuge"
+if (user.email) {
+  try {
+    await fetch('/api/send-chapter1-completed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: user.email,
+      }),
+    });
+  } catch (error) {
+    console.error(
+      'Erreur envoi email fin chapitre 1 :',
+      error
+    );
+  }
+}
     } catch (e) {
       console.error('Erreur suivi fin chapitre 1 :', e);
     }
