@@ -85,7 +85,10 @@ export async function GET(request: Request) {
                 name: 'Equilibria',
                 email: 'contact@voyage-equilibria.fr',
               },
-
+replyTo: {
+  email: 'nadia.ruello@gmail.com',
+  name: 'Nadia',
+},
               to: [
                 {
                   email: profile.email,
