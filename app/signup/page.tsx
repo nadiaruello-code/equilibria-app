@@ -51,6 +51,23 @@ export default function Signup() {
       } catch (error) {
         console.error('Erreur envoi email de bienvenue :', error);
       }
+      // Notification à Nadia lors d'une nouvelle inscription
+try {
+  await fetch('/api/send-admin-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  });
+} catch (error) {
+  console.error(
+    'Erreur notification nouvelle inscription :',
+    error
+  );
+}
     }
 
     setMsg(
