@@ -83,8 +83,8 @@ export default function Offres() {
           >
             Vous avez découvert le premier chapitre.
             Continuez à votre rythme et choisissez
-            l'expérience qui correspond le mieux à
-            vos besoins aujourd'hui.
+            l&apos;expérience qui correspond le mieux à
+            vos besoins aujourd&apos;hui.
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export default function Offres() {
             >
               Gardez votre espace Equilibria et
               prenez le temps de découvrir
-              l'expérience.
+              l&apos;expérience.
             </p>
 
             <div
@@ -175,7 +175,7 @@ export default function Offres() {
               }}
             >
               Une première semaine pour entrer
-              pleinement dans l'univers Equilibria.
+              pleinement dans l&apos;univers Equilibria.
             </p>
 
             <div
@@ -247,7 +247,7 @@ export default function Offres() {
                 whiteSpace: 'nowrap',
               }}
             >
-              ✨ L'expérience complète
+              🍂 Offre rentrée
             </div>
 
             <div
@@ -264,27 +264,97 @@ export default function Offres() {
               Voyage complet
             </h3>
 
-            <div className="price">
-              197 €
-            </div>
+            {/* OFFRE RENTRÉE */}
 
-            <p
+            <div
               style={{
-                fontWeight: 700,
-                color: '#9a771e',
-                marginTop: -4,
+                margin: '15px 0 8px',
+                textAlign: 'center',
               }}
             >
-              ou 3 × 69 €
-            </p>
+              <div
+                style={{
+                  display: 'inline-block',
+                  background: '#f6efe0',
+                  color: '#8a6a1f',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  fontSize: 13,
+                  fontWeight: 800,
+                  marginBottom: 12,
+                }}
+              >
+                ✨ -24 % POUR LA RENTRÉE
+              </div>
+
+              <div>
+                <span
+                  style={{
+                    textDecoration: 'line-through',
+                    opacity: 0.5,
+                    fontSize: 21,
+                    marginRight: 10,
+                  }}
+                >
+                  197 €
+                </span>
+
+                <span
+                  style={{
+                    fontSize: 36,
+                    fontWeight: 800,
+                    color: '#9a771e',
+                  }}
+                >
+                  150 €
+                </span>
+              </div>
+
+              <p
+                style={{
+                  margin: '8px 0 4px',
+                  fontWeight: 700,
+                  fontSize: 15,
+                }}
+              >
+                avec le code promo
+              </p>
+
+              <div
+                style={{
+                  display: 'inline-block',
+                  border: '2px dashed #d4af37',
+                  borderRadius: 8,
+                  padding: '7px 14px',
+                  fontSize: 17,
+                  fontWeight: 800,
+                  letterSpacing: '0.06em',
+                  color: '#8a6a1f',
+                  background: '#fffdf7',
+                }}
+              >
+                RENTREE26
+              </div>
+
+              <p
+                style={{
+                  margin: '9px 0 0',
+                  fontSize: 13,
+                  opacity: 0.7,
+                }}
+              >
+                Offre valable jusqu&apos;au 15 septembre 2026
+              </p>
+            </div>
 
             <p
               style={{
                 opacity: 0.75,
                 minHeight: 48,
+                marginTop: 20,
               }}
             >
-              L'intégralité du voyage Equilibria :
+              L&apos;intégralité du voyage Equilibria :
               42 chapitres pour avancer à votre
               rythme.
             </p>
@@ -306,7 +376,7 @@ export default function Offres() {
               ✓ Futures mises à jour incluses
             </div>
 
-            {/* 197 € */}
+            {/* PREMIUM 150 € AVEC CODE */}
 
             <button
               className="btn gold"
@@ -316,15 +386,47 @@ export default function Offres() {
               }
               style={{
                 width: '100%',
-                marginBottom: 12,
+                marginBottom: 8,
               }}
             >
               {loading === 'premium'
                 ? 'Ouverture du paiement...'
-                : 'Payer 197 € en une fois'}
+                : 'Profiter de l’offre à 150 €'}
             </button>
 
+            <p
+              style={{
+                textAlign: 'center',
+                marginTop: 0,
+                marginBottom: 18,
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#9a771e',
+              }}
+            >
+              👉 Entrez le code RENTREE26 au paiement
+            </p>
+
             {/* 3 X 69 */}
+
+            <div
+              style={{
+                borderTop: '1px solid rgba(0,0,0,0.08)',
+                margin: '18px 0',
+              }}
+            />
+
+            <p
+              style={{
+                textAlign: 'center',
+                fontSize: 14,
+                fontWeight: 700,
+                marginBottom: 10,
+                opacity: 0.75,
+              }}
+            >
+              Ou choisissez le paiement en 3 fois
+            </p>
 
             <button
               className="btn"
@@ -353,6 +455,8 @@ export default function Offres() {
               3 mensualités de 69 €.
               <br />
               Total : 207 €.
+              <br />
+              Offre RENTREE26 non applicable au paiement en 3 fois.
             </p>
 
             <p
@@ -472,7 +576,7 @@ export default function Offres() {
               opacity: 0.8,
             }}
           >
-            Pour prolonger l'expérience avec du
+            Pour prolonger l&apos;expérience avec du
             contenu exclusif, de nouveaux exercices
             et des ressources supplémentaires.
           </p>

@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/chapter1-reminder",
       "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/premium-reminder",
+      "schedule": "15 10 * * *"
     }
   ]
 }
