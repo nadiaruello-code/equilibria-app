@@ -48,10 +48,12 @@ export default function ChapterActions({ day, initialCompleted, initialJournal }
 
     <p>{msg}</p>
 
-    {day === 1 && completed && (
-      <div className="chapterNextStep">
-        <p style={{ fontSize: '1.4rem' }}>✨</p>
+    {completed && day <= 3 && (
+  <div className="chapterNextStep">
+    <p style={{ fontSize: '1.4rem' }}>✨</p>
 
+    {day === 1 && (
+      <>
         <h3>Vous venez de franchir votre première étape.</h3>
 
         <p>
@@ -59,13 +61,13 @@ export default function ChapterActions({ day, initialCompleted, initialJournal }
         </p>
 
         <p>
-          Mais pour avancer, il vous manque encore quelque chose…
+          Laissez cette première expérience continuer doucement son chemin.
         </p>
 
         <div className="nextChapterPreview">
           <p style={{ fontSize: '2rem', marginBottom: '8px' }}>🗝️</p>
 
-          <strong>Jour 2 — La clé du Refuge</strong>
+          <strong>Jour 2 — La Clé du Refuge</strong>
 
           <p>
             Une nouvelle étape pour ouvrir ce qui, jusqu’ici,
@@ -74,17 +76,86 @@ export default function ChapterActions({ day, initialCompleted, initialJournal }
         </div>
 
         <p>
-          Lumen vous attend pour continuer le voyage.
+          Lumen vous retrouvera demain pour poursuivre le voyage.
         </p>
+
+        <a
+          className="btn gold"
+          href="/chapitre/2"
+        >
+          Découvrir la prochaine étape →
+        </a>
+      </>
+    )}
+
+    {day === 2 && (
+      <>
+        <h3>Votre voyage continue.</h3>
+
+        <p>
+          Vous avez déjà franchi deux étapes. Prenez le temps de laisser
+          cette expérience s’installer en vous.
+        </p>
+
+        <div className="nextChapterPreview">
+          <p style={{ fontSize: '2rem', marginBottom: '8px' }}>🪶</p>
+
+          <strong>Jour 3 — Le Souffle retrouvé</strong>
+
+          <p>
+            Une nouvelle immersion pour retrouver de l’espace,
+            du calme et votre propre rythme.
+          </p>
+        </div>
+
+        <p>
+          Lumen vous retrouvera demain pour la troisième étape.
+        </p>
+
+        <a
+          className="btn gold"
+          href="/chapitre/3"
+        >
+          Découvrir la prochaine étape →
+        </a>
+      </>
+    )}
+
+    {day === 3 && (
+      <>
+        <h3>Vous venez de terminer vos 3 premières étapes.</h3>
+
+        <p>
+          Vous avez découvert l’univers d’Equilibria, rencontré Lumen
+          et commencé à créer vos premiers repères intérieurs.
+        </p>
+
+        <p>
+          Le voyage complet compte encore de nombreuses étapes,
+          pensées pour vous accompagner progressivement.
+        </p>
+
+        <div className="nextChapterPreview">
+          <p style={{ fontSize: '2rem', marginBottom: '8px' }}>🌊</p>
+
+          <strong>Jour 4 — La Rivière qui emporte</strong>
+
+          <p>
+            Votre prochaine étape vous attend si vous souhaitez
+            poursuivre le voyage.
+          </p>
+        </div>
 
         <a
           className="btn gold"
           href="/offres"
         >
-          Débloquer la suite du voyage →
+          Continuer mon voyage →
         </a>
-      </div>
+      </>
     )}
+  </div>
+)}
   </div>
 );
 }

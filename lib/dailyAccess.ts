@@ -24,7 +24,7 @@ export function getPlanLimit(
   const normalizedPlan = normalizePlan(plan);
 
   if (normalizedPlan === "free") {
-    return 1;
+    return 3;
   }
 
   if (normalizedPlan === "starter") {

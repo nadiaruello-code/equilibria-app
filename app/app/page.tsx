@@ -254,10 +254,10 @@ export default async function AppPage() {
 
           <span>
             {plan === 'free'
-              ? 'Accès au premier chapitre'
-              : plan === 'starter'
-                ? 'Accès aux 7 premiers chapitres'
-                : 'Accès aux 42 chapitres'}
+  ? '3 premiers chapitres offerts'
+  : plan === 'starter'
+    ? 'Accès aux 7 premiers chapitres'
+    : 'Accès aux 42 chapitres'}
           </span>
         </div>
 
